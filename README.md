@@ -1,0 +1,41 @@
+SpreePaymentNetwork
+===================
+
+Extends Spree for supporting Payment Network aka sofortueberwesing.de aka sofort.com. An appropiate Merchant Account is required to use it.
+
+
+Installation
+------------
+
+Add spree_payment_network to your Gemfile:
+
+```ruby
+gem 'spree_payment_network', :git => 'git://github.com/hefan/spree_payment_network.git'
+```
+
+For a specific version use the appropriate branch, for example
+
+```ruby
+gem 'spree_payment_network', :git => 'git://github.com/hefan/spree_payment_network.git', :branch => '2-2-stable'
+```
+
+
+Bundle your dependencies and run the installation generator:
+
+```shell
+bundle
+bundle exec rails g spree_payment_network:install
+```
+
+Setup
+-----
+
+Navigate to Spree Backend/Configuration/Payment Methods and add a new payment method with Provider "Spree::PaymentMethod::PaymentNetwork".
+Enter the Configuration key from your sofort merchant account. The default server url should work.
+
+Turn on the test mode in your sofort merchant backend to do testing.
+
+
+License
+-------
+released under the New BSD License
