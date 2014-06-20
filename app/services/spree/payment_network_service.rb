@@ -1,3 +1,5 @@
+require 'httparty'
+
 module Spree
   class PaymentNetworkService
 
@@ -6,7 +8,7 @@ module Spree
     # make the initialization request
     # https://www.sofort.com/integrationCenter-ger-DE/content/view/full/2513#h6-1
     # https://www.sofort.com/integrationCenter-ger-DE/content/view/full/2513#h6-2
-    def initial_request order, ref_number
+    def initial_request order, ref_number=nil
       init_data(order)
       ref_number = @order.number if ref_number.blank?
       @order.update_attribute(:payment_network_hash, build_exit_param)

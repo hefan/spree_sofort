@@ -2,7 +2,7 @@
 Gem::Specification.new do |s|
   s.platform    = Gem::Platform::RUBY
   s.name        = 'spree_payment_network'
-  s.version     = 'master'
+  s.version     = '2.2.0'
   s.summary     = 'Add sofortueberweisung payment to spree'
   s.description = 'add payment network aka sofortueberweisung aka sofort.com'
   s.required_ruby_version = '>= 1.9.3'

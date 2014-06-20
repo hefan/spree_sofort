@@ -8,10 +8,9 @@ Spree::CheckoutController.class_eval do
     payment_method = Spree::PaymentMethod.find(params[:order][:payments_attributes].first[:payment_method_id])
 
     if payment_method.kind_of?(Spree::PaymentMethod::PaymentNetwork)
-      @order.update_attributes(object_params)
+      @order.update_from_params(params, permitted_checkout_attributes)
 
-      @order.set_invoice_number
-      response = Spree::PaymentNetworkService.instance.initial_request(@order, @order.invoice_number)
+      response = Spree::PaymentNetworkService.instance.initial_request(@order)
 
       flash[:error] = response[:error] if response[:error].present?
       redirect_to response[:redirect_url], :status => 302
