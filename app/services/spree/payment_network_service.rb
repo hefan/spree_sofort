@@ -52,11 +52,12 @@ module Spree
       @cancel_url = cancel_url
 
       raise "order has no payment method" if @order.last_payment_method.blank?
-      raise "orders payment method is not payment network " unless @order.last_payment_method.kind_of? Spree::PaymentMethod::PaymentNetwork
+      raise "orders payment method is not payment network" unless @order.last_payment_method.kind_of? Spree::PaymentMethod::PaymentNetwork
       @payment_network = @order.last_payment_method
 
+      raise "payment network config key is blank" if @payment_network.preferred_config_key.blank?
       config_key_parts = @payment_network.preferred_config_key.split(":")
-      raise "there is no valid config key" if config_key_parts.length < 3
+      raise "payment network config key is invalid" if config_key_parts.length < 3
       @user_id = config_key_parts[0]
       @project_id = config_key_parts[1]
       @api_key = config_key_parts[2]
@@ -73,7 +74,7 @@ module Spree
 
     def initial_request_body ref_number
       base_url = "http://#{Spree::Config.site_url}"
-      notification_url = Spree::Config.site_url.start_with?("localhost") ? "" : "#{base_url}/payment_network/status"
+      notification_url = (Spree::Config.site_url.blank? or Spree::Config.site_url.start_with?("localhost")) ? "" : "#{base_url}/payment_network/status"
       body_hash = {
         :su => {:customer_protection => "1"},
         :amount => @order.total,
@@ -100,7 +101,11 @@ module Spree
 
     def parse_initial_response raw_response
       response = {}
-      if raw_response.parsed_response["errors"].present?
+      if raw_response.parsed_response.blank?
+        response[:redirect_url] = @cancel_url
+        response[:transaction] = ""
+        response[:error] = "Unauthorized"
+      elsif raw_response.parsed_response["errors"].present?
         response[:redirect_url] = @cancel_url
         response[:transaction] = ""
         response[:error] = "Error from sofort:

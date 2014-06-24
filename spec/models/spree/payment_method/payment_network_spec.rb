@@ -3,9 +3,7 @@ require 'spec_helper'
 describe Spree::PaymentMethod::PaymentNetwork do
 
   before(:all) do
-    @order = create(:order_with_line_items)
     @payment_network = create(:payment_network)
-    @payment = create(:payment, order: @order, payment_method: @payment_network)
   end
 
   describe "save preferences" do
@@ -23,9 +21,7 @@ describe Spree::PaymentMethod::PaymentNetwork do
   end
 
   after(:all) do
-    @payment.destroy
     @order.destroy
-    @payment_network.destroy
   end
 
 end
