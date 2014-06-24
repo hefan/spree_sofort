@@ -63,4 +63,10 @@ describe Spree::PaymentNetworkService do
 
   # TODO Use Webmock for testing payment newtwork initial and transaction response
 
+
+  after(:each) do
+    @order.destroy
+    @payment_network.destroy
+  end
+
 end

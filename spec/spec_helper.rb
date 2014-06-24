@@ -35,7 +35,6 @@ require 'spree_payment_network/factories'
 RSpec.configure do |config|
   config.expose_current_running_example_as :example
   config.infer_spec_type_from_file_location!
-
 	config.include Spree::TestingSupport::ControllerRequests, :type => :controller
 
   config.include FactoryGirl::Syntax::Methods

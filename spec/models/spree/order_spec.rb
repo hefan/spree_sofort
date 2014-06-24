@@ -3,8 +3,8 @@ require 'spec_helper'
 describe Spree::Order do
 
   before(:each) do
-    @order = create(:order)
-    @payment_method = create(:check_payment_method)
+    @order = FactoryGirl.create(:order)
+    @payment_method = FactoryGirl.create(:check_payment_method)
   end
 
 #-------------------------------------------------------------------------------------------------
@@ -31,7 +31,14 @@ describe Spree::Order do
       @order.last_payment_method.should_not be_nil
     end
 
+    after(:each) do
+      @payment.destroy
+    end
   end
 #-------------------------------------------------------------------------------------------------
+  after(:each) do
+    @order.destroy
+    @payment_method.destroy
+  end
 
 end
