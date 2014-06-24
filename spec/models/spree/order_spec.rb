@@ -31,14 +31,7 @@ describe Spree::Order do
       @order.last_payment_method.should_not be_nil
     end
 
-    after(:each) do
-      @payment.destroy
-    end
   end
 #-------------------------------------------------------------------------------------------------
-  after(:each) do
-    @order.destroy
-    @payment_method.destroy
-  end
 
 end
