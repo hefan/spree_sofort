@@ -21,7 +21,7 @@ describe Spree::PaymentMethod::PaymentNetwork do
   end
 
   after(:all) do
-    @order.destroy
+    @payment_network.destroy
   end
 
 end
