@@ -20,4 +20,8 @@ describe Spree::PaymentMethod::PaymentNetwork do
     end
   end
 
+  after(:all) do
+    @payment_network.destroy
+  end
+
 end
