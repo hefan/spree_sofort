@@ -35,6 +35,8 @@ Enter the Configuration key from your sofort merchant account. The default serve
 
 Turn on the test mode in your sofort merchant backend to do testing.
 
+Sofort aka Payment Network does only support Euro currency.
+
 
 License
 -------
