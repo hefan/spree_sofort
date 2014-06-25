@@ -27,6 +27,7 @@ bundle
 bundle exec rails g spree_payment_network:install
 ```
 
+
 Setup
 -----
 
@@ -34,6 +35,8 @@ Navigate to Spree Backend/Configuration/Payment Methods and add a new payment me
 Enter the Configuration key from your sofort merchant account. The default server url should work.
 
 Turn on the test mode in your sofort merchant backend to do testing.
+
+Sofort aka Payment Network does only support Euro currency.
 
 
 License
