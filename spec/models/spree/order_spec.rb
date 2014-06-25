@@ -4,7 +4,7 @@ describe Spree::Order do
 
   before(:each) do
     @order = FactoryGirl.create(:order)
-    @payment_method = FactoryGirl.create(:check_payment_method)
+    @payment_method = FactoryGirl.create(:payment_method)
   end
 
 #-------------------------------------------------------------------------------------------------

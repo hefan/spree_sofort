@@ -21,7 +21,7 @@ describe Spree::PaymentNetworkService do
     end
 
     it "raises wrong payment method exception" do
-      payment = FactoryGirl.create(:payment, order: @order, payment_method: create(:check_payment_method))
+      payment = FactoryGirl.create(:payment, order: @order, payment_method: create(:payment_method))
       expect {
         Spree::PaymentNetworkService.instance.initial_request(@order)
       }.to raise_error(RuntimeError, "orders payment method is not payment network")
