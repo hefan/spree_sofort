@@ -32,7 +32,7 @@ module Spree
                                   :headers => header,
                                   :body => transaction_request_body)
 
-      new_entry = "empty transaction status change"
+      new_entry = I18n.t("payment_network.transaction_status_default")
       if raw_response.parsed_response["transactions"].present? and
          raw_response.parsed_response["transactions"]["transaction_details"].present?
 
@@ -47,17 +47,17 @@ module Spree
     private
 
     def init_data(order, cancel_url = "/checkout/payment")
-      raise "no order given" if order.blank?
+      raise I18n.t("payment_network.no_order_given") if order.blank?
       @order = order
       @cancel_url = cancel_url
 
-      raise "order has no payment method" if @order.last_payment_method.blank?
-      raise "orders payment method is not payment network" unless @order.last_payment_method.kind_of? Spree::PaymentMethod::PaymentNetwork
+      raise I18n.t("payment_network.order_has_no_payment_method") if @order.last_payment_method.blank?
+      raise I18n.t("payment_network.orders_payment_method_is_not_payment_network") unless @order.last_payment_method.kind_of? Spree::PaymentMethod::PaymentNetwork
       @payment_network = @order.last_payment_method
 
-      raise "payment network config key is blank" if @payment_network.preferred_config_key.blank?
+      raise I18n.t("payment_network.config_key_is_blank") if @payment_network.preferred_config_key.blank?
       config_key_parts = @payment_network.preferred_config_key.split(":")
-      raise "payment network config key is invalid" if config_key_parts.length < 3
+      raise I18n.t("payment_network.config_key_is_invalid") if config_key_parts.length < 3
       @user_id = config_key_parts[0]
       @project_id = config_key_parts[1]
       @api_key = config_key_parts[2]
@@ -104,11 +104,11 @@ module Spree
       if raw_response.parsed_response.blank?
         response[:redirect_url] = @cancel_url
         response[:transaction] = ""
-        response[:error] = "Unauthorized"
+        response[:error] = I18n.t("payment_network.unauthorized")
       elsif raw_response.parsed_response["errors"].present?
         response[:redirect_url] = @cancel_url
         response[:transaction] = ""
-        response[:error] = "Error from sofort:
+        response[:error] = I18n.t("payment_network.error_from_sofort")+":
                         #{raw_response.parsed_response["errors"]["error"]["field"]}:
                         #{raw_response.parsed_response["errors"]["error"]["message"]}"
       else
