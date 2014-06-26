@@ -4,7 +4,7 @@ class Spree::PaymentNetworkController < ApplicationController
     order = Spree::Order.find_by_payment_network_hash(params[:oid])
 
     if params.blank? or params[:oid].blank? or order.blank?
-     	flash[:error] = "payment network canceled, order could not be found"
+     	flash[:error] = I18n.t("payment_network.order_not_found")
      	redirect_to '/checkout/payment', :status => 302
      	return
     end
@@ -16,14 +16,14 @@ class Spree::PaymentNetworkController < ApplicationController
       order.state = "complete"
       order.save!
       session[:order_id] = nil
-      flash[:notice] = I18n.t(:order_processed_successfully, :locale => :de)
+      flash[:notice] = I18n.t("payment_network.completed_successfully")
       success_redirect order
     end
 
   end
 
   def cancel
-    flash[:error] = "sofort payment canceled"
+    flash[:error] = I18n.t("payment_network.canceled")
     redirect_to '/checkout/payment', :status => 302
   end
 
