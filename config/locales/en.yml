@@ -8,6 +8,6 @@ en:
     order_has_no_payment_method: "order has no payment method"
     orders_payment_method_is_not_payment_network: "orders payment method is not payment network"
     config_key_is_blank: "payment network config key is blank"
-    config_key_is_invalid": "payment network config key is invalid"
+    config_key_is_invalid: "payment network config key is invalid"
     unauthorized: "Unauthorized"
     error_from_sofort: "Error from sofort"
