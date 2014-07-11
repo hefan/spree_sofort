@@ -1,11 +1,7 @@
 SpreeSofort
 ===================
 
-Extends Spree for supporting sofort.com aka sofortueberweisung.de aka Payment Network. An appropiate Merchant Account is required to use it.
-
-See also https://www.sofort.com/integrationCenter-eng-DE/content/view/full/2513
-
-See also https://www.sofort.com/integrationCenter-eng-DE/content/view/full/2513
+Extends Spree for supporting sofort.com aka sofortueberweisung.de aka Payment Network. An appropriate Merchant Account is required to use it.
 
 See also https://www.sofort.com/integrationCenter-eng-DE/content/view/full/2513
 
@@ -43,10 +39,6 @@ Enter the Configuration key from your sofort merchant account. The default serve
 Turn on the test mode in your Sofort merchant backend to do testing.
 
 Sofort does only support Euro currency.
-
-Sofort aka Payment Network does only support Euro currency.
-
-Sofort aka Payment Network does only support Euro currency.
 
 
 License
