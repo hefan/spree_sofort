@@ -1,13 +1,13 @@
 en:
-  payment_network:
-    completed_successfully: "payment network processed successfully"
-    canceled: "payment network canceled"
-    order_not_found: "order for payment network could not be found"
+  sofort:
+    completed_successfully: "sofort payment processed successfully"
+    canceled: "sofort payment canceled"
+    order_not_found: "order for sofort payment could not be found"
     transaction_status_default: "empty transaction status change"
     no_order_given: "no order given"
     order_has_no_payment_method: "order has no payment method"
-    orders_payment_method_is_not_payment_network: "orders payment method is not payment network"
-    config_key_is_blank: "payment network config key is blank"
-    config_key_is_invalid: "payment network config key is invalid"
+    orders_payment_method_is_not_sofort: "orders payment method is not sofort payment"
+    config_key_is_blank: "sofort config key is blank"
+    config_key_is_invalid: "sofort config key is invalid"
     unauthorized: "Unauthorized"
     error_from_sofort: "Error from sofort"
