@@ -1,7 +1,7 @@
 require 'httparty'
 
 module Spree
-  class PaymentNetworkService
+  class SofortService
 
     include Singleton
 
@@ -11,13 +11,13 @@ module Spree
     def initial_request order, ref_number=nil
       init_data(order)
       ref_number = @order.number if ref_number.blank?
-      @order.update_attribute(:payment_network_hash, build_exit_param)
-      raw_response = HTTParty.post(@payment_network.preferred_server_url,
+      @order.update_attribute(:sofort_hash, build_exit_param)
+      raw_response = HTTParty.post(@sofort.preferred_server_url,
                                   :headers => header,
                                   :body => initial_request_body(ref_number))
 
       response = parse_initial_response(raw_response)
-      @order.update_attribute(:payment_network_transaction, response[:transaction])
+      @order.update_attribute(:sofort_transaction, response[:transaction])
       return response
     end
 
@@ -26,38 +26,39 @@ module Spree
     # https://www.sofort.com/integrationCenter-ger-DE/content/view/full/2513#h6-4
     # https://www.sofort.com/integrationCenter-ger-DE/content/view/full/2513#h6-5
     def eval_transaction_status_change params
-      init_data(Spree::Order.find_by_payment_network_transaction(params[:status_notification][:transaction]))
+      init_data(Spree::Order.find_by_sofort_transaction(params[:status_notification][:transaction]))
 
-      raw_response = HTTParty.post(@payment_network.preferred_server_url,
+      raw_response = HTTParty.post(@sofort.preferred_server_url,
                                   :headers => header,
                                   :body => transaction_request_body)
 
-      new_entry = I18n.t("payment_network.transaction_status_default")
+      new_entry = I18n.t("sofort.transaction_status_default")
       if raw_response.parsed_response["transactions"].present? and
          raw_response.parsed_response["transactions"]["transaction_details"].present?
 
         td = raw_response.parsed_response["transactions"]["transaction_details"]
         new_entry = "#{td["time"]}: #{td["status"]} / #{td["status_reason"]} (#{td["amount"]})"
       end
-      old_entries = @order.payment_network_log || ""
-      @order.update_attribute(:payment_network_log, old_entries += "#{new_entry}\n")
+      old_entries = @order.sofort_log || ""
+      @order.update_attribute(:sofort_log, old_entries += "#{new_entry}\n")
     end
 
 
     private
 
     def init_data(order, cancel_url = "/checkout/payment")
-      raise I18n.t("payment_network.no_order_given") if order.blank?
+      raise I18n.t("sofort.no_order_given") if order.blank?
       @order = order
       @cancel_url = cancel_url
 
-      raise I18n.t("payment_network.order_has_no_payment_method") if @order.last_payment_method.blank?
-      raise I18n.t("payment_network.orders_payment_method_is_not_payment_network") unless @order.last_payment_method.kind_of? Spree::PaymentMethod::PaymentNetwork
-      @payment_network = @order.last_payment_method
+      raise I18n.t("sofort.order_has_no_payment_method") if @order.last_payment_method.blank?
+      raise I18n.t("sofort.orders_payment_method_is_not_sofort") unless @order.last_payment_method.kind_of? Spree::PaymentMethod::Sofort
+      @sofort = @order.last_payment_method
 
-      raise I18n.t("payment_network.config_key_is_blank") if @payment_network.preferred_config_key.blank?
-      config_key_parts = @payment_network.preferred_config_key.split(":")
-      raise I18n.t("payment_network.config_key_is_invalid") if config_key_parts.length < 3
+      raise I18n.t("sofort.config_key_is_blank") if @sofort.preferred_config_key.blank?
+      config_key_parts = @sofort.preferred_config_key.split(":")
+      raise I18n.t("sofort.config_key_is_invalid") if config_key_parts.length < 3
+
       @user_id = config_key_parts[0]
       @project_id = config_key_parts[1]
       @api_key = config_key_parts[2]
@@ -74,15 +75,15 @@ module Spree
 
     def initial_request_body ref_number
       base_url = "http://#{Spree::Config.site_url}"
-      notification_url = (Spree::Config.site_url.blank? or Spree::Config.site_url.start_with?("localhost")) ? "" : "#{base_url}/payment_network/status"
+      notification_url = (Spree::Config.site_url.blank? or Spree::Config.site_url.start_with?("localhost")) ? "" : "#{base_url}/sofort/status"
       body_hash = {
         :su => {:customer_protection => "1"},
         :amount => @order.total,
         :currency_code => Spree::Config.currency,
         :reasons => {:reason => ref_number},
-        :success_url => "#{base_url}/payment_network/success?oid=#{@order.payment_network_hash}",
+        :success_url => "#{base_url}/sofort/success?oid=#{@order.sofort_hash}",
         :success_link_redirect => "1",
-        :abort_url => "#{base_url}/payment_network/cancel",
+        :abort_url => "#{base_url}/sofort/cancel",
         # no url with port as notification url allowed
         :notification_urls => {:notification_url => notification_url},
         :project_id => @project_id
@@ -93,7 +94,7 @@ module Spree
 
     def transaction_request_body
       body_hash = {
-        :transaction => @order.payment_network_transaction
+        :transaction => @order.sofort_transaction
       }
       body_hash.to_xml(:dasherize => false, :root => 'transaction_request',
                        :root_attrs => {:version => '2'})
@@ -104,11 +105,11 @@ module Spree
       if raw_response.parsed_response.blank?
         response[:redirect_url] = @cancel_url
         response[:transaction] = ""
-        response[:error] = I18n.t("payment_network.unauthorized")
+        response[:error] = I18n.t("sofort.unauthorized")
       elsif raw_response.parsed_response["errors"].present?
         response[:redirect_url] = @cancel_url
         response[:transaction] = ""
-        response[:error] = I18n.t("payment_network.error_from_sofort")+":
+        response[:error] = I18n.t("sofort.error_from_sofort")+":
                         #{raw_response.parsed_response["errors"]["error"]["field"]}:
                         #{raw_response.parsed_response["errors"]["error"]["message"]}"
       else
@@ -119,7 +120,7 @@ module Spree
     end
 
     def build_exit_param
-      Digest::SHA2.hexdigest(@order.number+@payment_network.preferred_config_key)
+      Digest::SHA2.hexdigest(@order.number+@sofort.preferred_config_key)
     end
 
   end
