@@ -29,8 +29,8 @@ require 'spree/testing_support/controller_requests'
 require 'spree/testing_support/authorization_helpers'
 require 'spree/testing_support/url_helpers'
 
-# Requires factories defined in lib/spree_payment_network/factories.rb
-require 'spree_payment_network/factories'
+# Requires factories defined in lib/spree_sofort/factories.rb
+require 'spree_sofort/factories'
 
 RSpec.configure do |config|
   config.expose_current_running_example_as :example

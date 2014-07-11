@@ -1,7 +1,7 @@
-SpreePaymentNetwork
+SpreeSofort
 ===================
 
-Extends Spree for supporting Payment Network aka sofortueberweisung.de aka sofort.com. An appropiate Merchant Account is required to use it.
+Extends Spree for supporting sofort.com aka sofortueberweisung.de aka Payment Network. An appropiate Merchant Account is required to use it.
 
 See also https://www.sofort.com/integrationCenter-eng-DE/content/view/full/2513
 
@@ -9,16 +9,16 @@ See also https://www.sofort.com/integrationCenter-eng-DE/content/view/full/2513
 Installation
 ------------
 
-Add spree_payment_network to your Gemfile:
+Add spree_sofort to your Gemfile:
 
 ```ruby
-gem 'spree_payment_network', :git => 'git://github.com/hefan/spree_payment_network.git'
+gem 'spree_sofort', :git => 'git://github.com/hefan/spree_sofort.git'
 ```
 
 For a specific version use the appropriate branch, for example
 
 ```ruby
-gem 'spree_payment_network', :git => 'git://github.com/hefan/spree_payment_network.git', :branch => '2-2-stable'
+gem 'spree_sofort', :git => 'git://github.com/hefan/spree_sofort.git', :branch => '2-2-stable'
 ```
 
 
@@ -26,17 +26,19 @@ Bundle your dependencies and run the installation generator:
 
 ```shell
 bundle
-bundle exec rails g spree_payment_network:install
+bundle exec rails g spree_sofort:install
 ```
 
 
 Setup
 -----
 
-Navigate to Spree Backend/Configuration/Payment Methods and add a new payment method with Provider "Spree::PaymentMethod::PaymentNetwork".
+Navigate to Spree Backend/Configuration/Payment Methods and add a new payment method with Provider "Spree::PaymentMethod::Sofort".
 Enter the Configuration key from your sofort merchant account. The default server url should work.
 
-Turn on the test mode in your sofort merchant backend to do testing.
+Turn on the test mode in your Sofort merchant backend to do testing.
+
+Sofort does only support Euro currency.
 
 Sofort aka Payment Network does only support Euro currency.
 
