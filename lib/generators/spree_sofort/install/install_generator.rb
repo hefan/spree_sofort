@@ -1,4 +1,4 @@
-module SpreePaymentNetwork
+module SpreeSofort
   module Generators
     class InstallGenerator < Rails::Generators::Base
 
@@ -11,7 +11,7 @@ module SpreePaymentNetwork
       end
 
       def add_migrations
-        run 'bundle exec rake railties:install:migrations FROM=spree_payment_network'
+        run 'bundle exec rake railties:install:migrations FROM=spree_sofort'
       end
 
       def run_migrations
