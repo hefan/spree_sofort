@@ -1,7 +1,7 @@
 SpreeSofort
 ===================
 
-Extends Spree for supporting sofort.com aka sofortueberweisung.de aka Payment Network. An appropiate Merchant Account is required to use it.
+Extends Spree for supporting sofort.com aka sofortueberweisung.de aka Payment Network. An appropriate Merchant Account is required to use it.
 
 See also https://www.sofort.com/integrationCenter-eng-DE/content/view/full/2513
 
