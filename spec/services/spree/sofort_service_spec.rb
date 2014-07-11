@@ -24,7 +24,7 @@ describe Spree::SofortService do
       payment = FactoryGirl.create(:payment, order: @order, payment_method: create(:check_payment_method))
       expect {
         Spree::SofortService.instance.initial_request(@order)
-      }.to raise_error(RuntimeError, "orders payment method is not sofort")
+      }.to raise_error(RuntimeError, "orders payment method is not sofort payment")
     end
 
     it "raises blank config key exception" do
