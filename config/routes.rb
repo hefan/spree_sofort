@@ -1,5 +1,5 @@
 Spree::Core::Engine.routes.draw do
-  get '/payment_network/success', :to => 'payment_network#success'
-  get '/payment_network/cancel', :to => 'payment_network#cancel'
-  post '/payment_network/status', :to => 'payment_network#status'
+  get '/sofort/success', :to => 'sofort#success'
+  get '/sofort/cancel', :to => 'sofort#cancel'
+  post '/sofort/status', :to => 'sofort#status'
 end
