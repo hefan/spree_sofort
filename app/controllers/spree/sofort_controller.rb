@@ -4,11 +4,7 @@ class Spree::SofortController < ApplicationController
     order = Spree::Order.find_by_sofort_hash(params[:oid])
 
     if params.blank? or params[:oid].blank? or order.blank?
-<<<<<<< HEAD:app/controllers/spree/payment_network_controller.rb
-     	flash[:error] = I18n.t("payment_network.order_not_found")
-=======
      	flash[:error] = I18n.t("sofort.order_not_found")
->>>>>>> 2-2-stable:app/controllers/spree/sofort_controller.rb
      	redirect_to '/checkout/payment', :status => 302
      	return
     end
@@ -20,22 +16,14 @@ class Spree::SofortController < ApplicationController
       order.state = "complete"
       order.save!
       session[:order_id] = nil
-<<<<<<< HEAD:app/controllers/spree/payment_network_controller.rb
-      flash[:notice] = I18n.t("payment_network.completed_successfully")
-=======
-      flash[:notice] = I18n.t("sofort.completed_successfully")
->>>>>>> 2-2-stable:app/controllers/spree/sofort_controller.rb
+      flash[:success] = I18n.t("sofort.completed_successfully")
       success_redirect order
     end
 
   end
 
   def cancel
-<<<<<<< HEAD:app/controllers/spree/payment_network_controller.rb
-    flash[:error] = I18n.t("payment_network.canceled")
-=======
     flash[:error] = I18n.t("sofort.canceled")
->>>>>>> 2-2-stable:app/controllers/spree/sofort_controller.rb
     redirect_to '/checkout/payment', :status => 302
   end
 
