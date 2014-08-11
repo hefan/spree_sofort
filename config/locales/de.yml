@@ -1,0 +1,13 @@
+en:
+  sofort:
+    completed_successfully: "Sofortüberweisung erfolgreich durchgeführt"
+    canceled: "Sofortüberweisung abgebrochen"
+    order_not_found: "Bestellung für Sofortüberweisung konnte nicht gefunden werden"
+    transaction_status_default: "leere transaktionstatus-meldung"
+    no_order_given: "keine Bestellung angegeben"
+    order_has_no_payment_method: "Bestellung hat keine Bezahlmethode"
+    orders_payment_method_is_not_sofort: "Bezahlmethode der Bestellung ist nicht vom Typ Sofortüberweisung"
+    config_key_is_blank: "Der Konfigurationsschlüssel ist leer"
+    config_key_is_invalid: "Der Konfigurationsschlüssel ist ungültig"
+    unauthorized: "nicht autorisiert"
+    error_from_sofort: "Fehler von Sofortüberweisung"

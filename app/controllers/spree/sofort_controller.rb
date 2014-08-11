@@ -16,7 +16,7 @@ class Spree::SofortController < ApplicationController
       order.state = "complete"
       order.save!
       session[:order_id] = nil
-      flash[:notice] = I18n.t("sofort.completed_successfully")
+      flash[:success] = I18n.t("sofort.completed_successfully")
       success_redirect order
     end
 
