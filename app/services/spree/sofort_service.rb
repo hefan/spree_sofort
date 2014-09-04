@@ -73,8 +73,8 @@ module Spree
     end
 
     def initial_request_body ref_number
-      base_url = "http://#{Spree::Config.site_url}"
-      notification_url = (Spree::Config.site_url.blank? or Spree::Config.site_url.start_with?("localhost")) ? "" : "#{base_url}/sofort/status"
+      base_url = "http://#{Spree::Store.current.url}"
+      notification_url = (Spree::Store.current.url.blank? or Spree::Store.current.url.start_with?("localhost")) ? "" : "#{base_url}/sofort/status"
       body_hash = {
         :su => {:customer_protection => "1"},
         :amount => @order.total,

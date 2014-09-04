@@ -61,7 +61,7 @@ describe Spree::SofortService do
 
   end
 
-  # TODO Use Webmock for testing payment newtwork initial and transaction response
+  # TODO Use Webmock for testing payment network initial and transaction response
 
 
   after(:each) do
