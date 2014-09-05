@@ -64,10 +64,10 @@ describe Spree::SofortService do
         }.to raise_error(RuntimeError, "no order given")
       end
 
-      it "raises no payment method exception" do
+      it "raises no payment exception" do
         expect {
           Spree::SofortService.instance.initial_request(@order)
-        }.to raise_error(RuntimeError, "order has no payment method")
+        }.to raise_error(RuntimeError, "order has no payment")
       end
 
       it "raises wrong payment method exception" do
@@ -116,7 +116,7 @@ describe Spree::SofortService do
       it "sets the correct sofort_hash" do
         correct_hash = Digest::SHA2.hexdigest(@order.number+@sofort.get_preference(:config_key))
         Spree::SofortService.instance.initial_request(@order)
-        expect(@order.sofort_hash).to eq(correct_hash)
+        expect(@order.last_payment.sofort_hash).to eq(correct_hash)
       end
 
       it "gets a redirect url and transaction key from sofort" do
@@ -127,7 +127,7 @@ describe Spree::SofortService do
 
       it "sets the correct transaction key" do
         Spree::SofortService.instance.initial_request(@order)
-        expect(@order.sofort_transaction).to eq(transaction)
+        expect(@order.last_payment.sofort_transaction).to eq(transaction)
       end
 
     end # context success
@@ -149,7 +149,7 @@ describe Spree::SofortService do
       it "with wrong transaction id" do
         expect {
           Spree::SofortService.instance.eval_transaction_status_change({:status_notification => {:transaction => "bogus" }})
-        }.to raise_error(RuntimeError, "no order given")
+        }.to raise_error(RuntimeError, "no payment given")
       end
 
     end
@@ -160,8 +160,8 @@ describe Spree::SofortService do
       it "logs status change" do
         stub_transaction_request valid_auth
         Spree::SofortService.instance.eval_transaction_status_change({:status_notification => {:transaction => transaction}})
-        changed_order = Spree::Order.find_by_sofort_transaction(transaction)
-        expect(changed_order.sofort_log).to include("some status")
+        changed_payment = Spree::Payment.find_by_sofort_transaction(transaction)
+        expect(changed_payment.sofort_log).to include("some status")
       end
 
     end
