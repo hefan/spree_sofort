@@ -1,3 +1,5 @@
+require 'webmock/rspec'
+
 # Run Coverage report
 require 'simplecov'
 SimpleCov.start do
