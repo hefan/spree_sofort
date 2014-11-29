@@ -18,7 +18,7 @@ gem 'spree_sofort', :git => 'git://github.com/hefan/spree_sofort.git'
 For a specific version use the appropriate branch, for example
 
 ```ruby
-gem 'spree_sofort', :git => 'git://github.com/hefan/spree_sofort.git', :branch => '2-2-stable'
+gem 'spree_sofort', :git => 'git://github.com/hefan/spree_sofort.git', :branch => '2-4-stable'
 ```
 
 
