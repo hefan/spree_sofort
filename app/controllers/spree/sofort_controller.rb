@@ -1,5 +1,7 @@
 class Spree::SofortController < ApplicationController
 
+  skip_before_filter :verify_authenticity_token, :only => :status
+
   def success
     sofort_payment = Spree::Payment.find_by_sofort_hash(params[:sofort_hash])
     if params.blank? or params[:sofort_hash].blank? or sofort_payment.blank?
