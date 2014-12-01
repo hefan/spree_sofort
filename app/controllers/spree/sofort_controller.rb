@@ -2,7 +2,7 @@ class Spree::SofortController < ApplicationController
 
   def success
     sofort_payment = Spree::Payment.find_by_sofort_hash(params[:sofort_hash])
-    if params.blank? or params[:oid].blank? or sofort_payment.blank?
+    if params.blank? or params[:sofort_hash].blank? or sofort_payment.blank?
        flash[:error] = I18n.t("sofort.payment_not_found")
        redirect_to '/checkout/payment', :status => 302
        return
