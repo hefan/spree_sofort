@@ -26,6 +26,7 @@ module Spree
     # https://www.sofort.com/integrationCenter-ger-DE/content/view/full/2513#h6-4
     # https://www.sofort.com/integrationCenter-ger-DE/content/view/full/2513#h6-5
     def eval_transaction_status_change params
+      return if params.blank? or params[:status_notification].blank? or params[:status_notification][:transaction].blank?
       init_data_by_payment(Spree::Payment.find_by_sofort_transaction(params[:status_notification][:transaction]))
 
       raw_response = HTTParty.post(@sofort_payment.payment_method.preferred_server_url,
