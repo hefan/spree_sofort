@@ -16,8 +16,9 @@ class Spree::SofortController < ApplicationController
     end
 
     if order.state.eql? "complete"  # complete again via browser back or recalling sofort "go" url
-      redirect_to "/orders/#{order.number}", :status => 302
+      success_redirect order
     else
+      sofort_payment.complete!
       order.finalize!
       order.state = "complete"
       order.save!
