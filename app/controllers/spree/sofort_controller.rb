@@ -1,5 +1,7 @@
 class Spree::SofortController < ApplicationController
 
+  skip_before_filter :verify_authenticity_token, :only => :status
+
   def success
     order = Spree::Order.find_by_sofort_hash(params[:oid])
 
@@ -15,6 +17,7 @@ class Spree::SofortController < ApplicationController
       order.finalize!
       order.state = "complete"
       order.save!
+      sofort_payment.complete!
       session[:order_id] = nil
       flash[:success] = I18n.t("sofort.completed_successfully")
       success_redirect order
