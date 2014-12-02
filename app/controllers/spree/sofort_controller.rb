@@ -1,5 +1,7 @@
 class Spree::SofortController < ApplicationController
 
+  skip_before_filter :verify_authenticity_token, :only => :status
+
   def success
     order = Spree::Order.find_by_sofort_hash(params[:oid])
 
