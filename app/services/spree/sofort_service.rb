@@ -10,7 +10,7 @@ module Spree
     # https://www.sofort.com/integrationCenter-ger-DE/content/view/full/2513#h6-2
     def initial_request order, ref_number=nil
       init_data_by_order(order)
-      ref_number = @order.number if ref_number.blank?
+      ref_number = @order.sofort_ref_number if ref_number.blank?
       @sofort_payment.update_attribute(:sofort_hash, build_exit_param)
       raw_response = HTTParty.post(@sofort_payment.payment_method.preferred_server_url,
                                   :headers => header,
