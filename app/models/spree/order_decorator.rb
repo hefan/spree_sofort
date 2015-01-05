@@ -10,4 +10,12 @@ Spree::Order.class_eval do
 		return payments.last
 	end
 
+  def sofort_ref_number
+		if last_payment_method.present?
+		  "#{last_payment_method.preferred_reference_prefix}#{number}#{last_payment_method.preferred_reference_suffix}"
+		else
+			number
+		end
+	end
+
 end
