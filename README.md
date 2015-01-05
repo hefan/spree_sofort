@@ -34,7 +34,9 @@ Setup
 -----
 
 Navigate to Spree Backend/Configuration/Payment Methods and add a new payment method with Provider "Spree::PaymentMethod::Sofort".
-Enter the Configuration key from your sofort merchant account. The default server url should work. You may use a reference prefix and/or suffix if you like to add something before or after the order number used as reference for sofort.
+Enter the Configuration key from your sofort merchant account.
+
+The default server url should work. You may use a reference prefix and/or suffix if you like to add something before or after the order number used as reference for sofort.
 
 Turn on the test mode in your Sofort merchant backend to do testing.
 
