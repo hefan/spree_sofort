@@ -18,7 +18,7 @@ gem 'spree_sofort', :git => 'git://github.com/hefan/spree_sofort.git'
 For a specific version use the appropriate branch, for example
 
 ```ruby
-gem 'spree_sofort', :git => 'git://github.com/hefan/spree_sofort.git', :branch => '2-2-stable'
+gem 'spree_sofort', :git => 'git://github.com/hefan/spree_sofort.git', :branch => '1-3-stable'
 ```
 
 
@@ -34,7 +34,9 @@ Setup
 -----
 
 Navigate to Spree Backend/Configuration/Payment Methods and add a new payment method with Provider "Spree::PaymentMethod::Sofort".
-Enter the Configuration key from your sofort merchant account. The default server url should work.
+Enter the Configuration key from your sofort merchant account.
+
+The default server url should work. You may use a reference prefix and/or suffix if you like to add something before or after the order number used as reference for sofort.
 
 Turn on the test mode in your Sofort merchant backend to do testing.
 
