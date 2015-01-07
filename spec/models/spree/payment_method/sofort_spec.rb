@@ -18,6 +18,19 @@ describe Spree::PaymentMethod::Sofort do
       @sofort.save!
       @sofort.get_preference(:server_url).should eql("the url");
     end
+
+    it "can save reference prefix" do
+      @sofort.set_preference(:reference_prefix, "prefix")
+      @sofort.save!
+      @sofort.get_preference(:reference_prefix).should eql("prefix");
+    end
+
+    it "can save reference suffix" do
+      @sofort.set_preference(:reference_suffix, "suffix")
+      @sofort.save!
+      @sofort.get_preference(:reference_suffix).should eql("suffix");
+    end
+
   end
 
   after(:all) do
