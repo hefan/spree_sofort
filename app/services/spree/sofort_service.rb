@@ -123,9 +123,8 @@ module Spree
       elsif raw_response.parsed_response["errors"].present?
         response[:redirect_url] = @cancel_url
         response[:transaction] = ""
-        response[:error] = I18n.t("sofort.error_from_sofort")+":
-                        #{raw_response.parsed_response["errors"]["error"]["field"]}:
-                        #{raw_response.parsed_response["errors"]["error"]["message"]}"
+        all_errors = raw_response.parsed_response["errors"]["error"].map { |e| "#{e['field']}: #{e['message']}" }.join(", ")
+        response[:error] = I18n.t("sofort.error_from_sofort")+": #{all_errors}"
       else
         response[:redirect_url] = raw_response.parsed_response["new_transaction"]["payment_url"]
         response[:transaction] = raw_response.parsed_response["new_transaction"]["transaction"]
