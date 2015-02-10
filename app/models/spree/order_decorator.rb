@@ -7,7 +7,7 @@ Spree::Order.class_eval do
 
 	def last_payment
 		return nil if payments.blank?
-		return payments.last
+		return payments.order('created_at DESC').limit(1).first
 	end
 
   def sofort_ref_number
