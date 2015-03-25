@@ -133,7 +133,7 @@ module Spree
     end
 
     def build_exit_param
-      Digest::SHA2.hexdigest(@order.number+@sofort_payment.payment_method.preferred_config_key)
+      Digest::SHA2.hexdigest(@order.number+@sofort_payment.id.to_s+@sofort_payment.payment_method.preferred_config_key)
     end
 
   end
