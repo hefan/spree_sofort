@@ -1,3 +1,9 @@
 <div class="sofort">
-  <%= image_tag 'sofort_small.png' %>
+  <p><%= I18n.t("sofort.name") %><p>
+  <%= image_tag "https://images.sofort.com/#{I18n.locale.to_s}/su/logo_155x50.png" %>
+  <p>* <%= I18n.t("sofort.desc1") %></p>
+  <p>* <%= I18n.t("sofort.desc2") %></p>
+  <p>* <%= I18n.t("sofort.desc3") %></p>
+  <p>* <%= I18n.t("sofort.desc4") %></p>
+  <p>&nbsp;</p>
 </div>
