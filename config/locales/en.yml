@@ -1,5 +1,10 @@
 en:
   sofort:
+    name: "SOFORT Banking"
+    desc1: "Vom TÜV Saarland zertifiziertes Zahlungssystem mit geprüftem Datenschutz"
+    desc2: "Keine Registrierung notwendig"
+    desc3: "Ware / Content kann bei Verfügbarkeit SOFORT versendet / freigeschaltet werden"
+    desc4: "Bitte halten Sie Ihre Online-Banking-Daten (PIN/TAN) bereit"
     completed_successfully: "sofort payment processed successfully"
     canceled: "sofort payment canceled"
     payment_not_found: "payment data for sofort payment could not be found"
