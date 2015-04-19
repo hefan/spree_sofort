@@ -1,3 +1,2 @@
-<div class="row">
-  <p><%= simple_format(payment.sofort_log) %></p>
-</div>
+<h4><%= I18n.t("sofort.transactionmsgs") %> <%= payment.sofort_transaction %>: </h4>
+<p><%= simple_format(payment.sofort_log) %></p>
