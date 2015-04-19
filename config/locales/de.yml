@@ -21,3 +21,4 @@ de:
     config_key_is_invalid: "Der Konfigurationsschlüssel ist ungültig"
     unauthorized: "nicht autorisiert"
     error_from_sofort: "Fehler von Sofortüberweisung"
+    transactionmsgs: "Transaktionen für Sofort-Transaktionsnummer"
