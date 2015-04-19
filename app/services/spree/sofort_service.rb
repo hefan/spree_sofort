@@ -38,6 +38,7 @@ module Spree
          raw_response.parsed_response["transactions"]["transaction_details"].present?
 
         td = raw_response.parsed_response["transactions"]["transaction_details"]
+        alter_payment_status(td)
         new_entry = "#{td["time"]}: #{td["status"]} / #{td["status_reason"]} (#{td["amount"]})"
       end
       old_entries = @order.sofort_log || ""
@@ -46,6 +47,18 @@ module Spree
 
 
     private
+
+    def alter_payment_status transaction_details
+      if transaction_details["status"].present?
+        if transaction_details["status"].eql? "loss"
+          @order.last_payment.failure!
+        elsif transaction_details["status"].eql? "refunded"
+          @order.last_payment.void!
+        else
+          @order.last_payment.complete!
+        end
+      end
+    end
 
     def init_data(order, cancel_url = "/checkout/payment")
       raise I18n.t("sofort.no_order_given") if order.blank?
@@ -78,7 +91,7 @@ module Spree
       base_url = "http://#{Spree::Config.site_url}"
       notification_url = (Spree::Config.site_url.blank? or Spree::Config.site_url.start_with?("localhost")) ? "" : "#{base_url}/sofort/status"
       body_hash = {
-        :su => {:customer_protection => "1"},
+        :su => {},
         :amount => @order.total,
         :currency_code => Spree::Config.currency,
         :reasons => {:reason => ref_number},

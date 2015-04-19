@@ -21,3 +21,4 @@ en:
     config_key_is_invalid: "sofort config key is invalid"
     unauthorized: "Unauthorized"
     error_from_sofort: "Error from sofort"
+    transactionmsgs: "Transactions for Sofort Transaction-ID"
