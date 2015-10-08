@@ -51,13 +51,13 @@ module Spree
     def alter_payment_status transaction_details
       if transaction_details["status"].present?
         if transaction_details["status"].eql? "loss"
-          @order.last_payment.process! # could be received after a loss -> no failure or void here
+          @order.last_payment.void
         elsif transaction_details["status"].eql? "pending"
-          @order.last_payment.process!
+          @order.last_payment.complete
         elsif transaction_details["status"].eql? "refunded"
-          @order.last_payment.void!
+          @order.last_payment.void
         else # received
-          @order.last_payment.complete!
+          @order.last_payment.complete
         end
       end
     end
