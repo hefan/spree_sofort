@@ -49,13 +49,13 @@ module Spree
     def alter_payment_status transaction_details
       if transaction_details["status"].present?
         if transaction_details["status"].eql? "loss"
-          @sofort_payment.process! # could be received after a loss -> no failure or void here
+          @sofort_payment.void
         elsif transaction_details["status"].eql? "pending"
-          @sofort_payment.process!
+          @sofort_payment.complete
         elsif transaction_details["status"].eql? "refunded"
-          @sofort_payment.void!
+          @sofort_payment.void
         else # received
-          @sofort_payment.complete!
+          @sofort_payment.complete
         end
       end
     end
