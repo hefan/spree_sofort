@@ -4,7 +4,6 @@ FactoryGirl.define do
 		name "sofort.com payment"
 		type "Spree::PaymentMethod::Sofort"
 		active true
-		environment "test"
   end
 
 end

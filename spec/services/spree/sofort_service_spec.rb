@@ -74,14 +74,14 @@ describe Spree::SofortService do
         payment = FactoryGirl.create(:payment, order: @order, payment_method: create(:check_payment_method))
         expect {
           Spree::SofortService.instance.initial_request(@order)
-        }.to raise_error(RuntimeError, "orders payment method is not sofort payment")
+        }.to raise_error(RuntimeError, "orders payment method is not #{I18n.t('sofort.name')} payment")
       end
 
       it "raises blank config key exception" do
         payment = FactoryGirl.create(:payment, order: @order, payment_method: @sofort)
         expect {
           Spree::SofortService.instance.initial_request(@order)
-        }.to raise_error(RuntimeError, "sofort config key is blank")
+        }.to raise_error(RuntimeError, "#{I18n.t('sofort.name')} config key is blank")
       end
 
       it "raises invalid config key exception" do
@@ -90,7 +90,7 @@ describe Spree::SofortService do
         payment = FactoryGirl.create(:payment, order: @order, payment_method: @sofort)
         expect {
           Spree::SofortService.instance.initial_request(@order)
-        }.to raise_error(RuntimeError, "sofort config key is invalid")
+        }.to raise_error(RuntimeError, "#{I18n.t('sofort.name')} config key is invalid")
       end
 
       it "get unauthorized response without valid sofort merchant key" do
@@ -110,11 +110,11 @@ describe Spree::SofortService do
         stub_initial_request valid_auth
         @sofort.set_preference(:config_key, valid_config)
         @sofort.save!
-        FactoryGirl.create(:payment, order: @order, payment_method: @sofort)
+        @spayment = FactoryGirl.create(:payment, order: @order, payment_method: @sofort)
       end
 
       it "sets the correct sofort_hash" do
-        correct_hash = Digest::SHA2.hexdigest(@order.number+@sofort.get_preference(:config_key))
+        correct_hash = Digest::SHA2.hexdigest(@order.number+@spayment.id.to_s+@sofort.preferred_config_key)
         Spree::SofortService.instance.initial_request(@order)
         expect(@order.last_payment.sofort_hash).to eq(correct_hash)
       end
