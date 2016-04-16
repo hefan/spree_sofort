@@ -125,8 +125,12 @@ module Spree
       elsif raw_response.parsed_response["errors"].present?
         response[:redirect_url] = @cancel_url
         response[:transaction] = ""
-        all_errors = raw_response.parsed_response["errors"]["error"].map { |e| "#{e['field']}: #{e['message']}" }.join(", ")
-        response[:error] = I18n.t("sofort.error_from_sofort")+": #{all_errors}"
+        all_errors = raw_response.parsed_response["errors"]["error"]
+        if all_errors.kind_of?(Array)
+          response[:error] = I18n.t("sofort.error_from_sofort")+": "+(all_errors.map { |e| "#{e['field']}: #{e['message']}" }.join(", "))
+        else
+          response[:error] = I18n.t("sofort.error_from_sofort")+": "+all_errors["field"]+":"+all_errors["message"]
+        end
       else
         response[:redirect_url] = raw_response.parsed_response["new_transaction"]["payment_url"]
         response[:transaction] = raw_response.parsed_response["new_transaction"]["transaction"]
