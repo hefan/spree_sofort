@@ -1,4 +1,4 @@
-module SpreePSofort
+module SpreeSofort
   class Engine < Rails::Engine
     require 'spree/core'
     isolate_namespace Spree
@@ -20,7 +20,7 @@ module SpreePSofort
 
     initializer "spree_sofort.register.payment_methods", :after => 'spree.register.payment_methods' do |app|
       app.config.spree.payment_methods += [Spree::PaymentMethod::Sofort]
-		end
+    end
 
   end
 end
