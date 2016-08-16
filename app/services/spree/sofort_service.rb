@@ -26,7 +26,7 @@ module Spree
     # https://www.sofort.com/integrationCenter-ger-DE/content/view/full/2513#h6-4
     # https://www.sofort.com/integrationCenter-ger-DE/content/view/full/2513#h6-5
     def eval_transaction_status_change params
-      return if params.blank? or params[:status_notification].blank? or params[:status_notification][:transaction].blank?
+      return if params.blank? || params[:status_notification].blank? || params[:status_notification][:transaction].blank?
       init_data_by_payment(Spree::Payment.find_by_sofort_transaction(params[:status_notification][:transaction]))
       raw_response = HTTParty.post(@sofort_payment.payment_method.preferred_server_url,
                                   :headers => header,
@@ -48,11 +48,11 @@ module Spree
 
     def alter_payment_status transaction_details
       if transaction_details["status"].present?
-        if transaction_details["status"].eql? "loss"
+        if transaction_details["status"] ==  "loss"
           @sofort_payment.void
-        elsif transaction_details["status"].eql? "pending"
+        elsif transaction_details["status"] == "pending"
           @sofort_payment.complete
-        elsif transaction_details["status"].eql? "refunded"
+        elsif transaction_details["status"] == "refunded"
           @sofort_payment.void
         else # received
           @sofort_payment.complete
@@ -101,30 +101,24 @@ module Spree
     end
 
     def initial_request_body ref_number
-      base_url = "http://#{Spree::Store.current.url}"
-      notification_url = (Spree::Store.current.url.blank? or Spree::Store.current.url.start_with?("localhost")) ? "" : "#{base_url}/sofort/status"
-      body_hash = {
-        :su => { },
-        :amount => @order.total,
-        :currency_code => Spree::Config.currency,
-        :reasons => {:reason => ref_number},
-        :success_url => "#{base_url}/sofort/success?sofort_hash=#{@sofort_payment.sofort_hash}",
-        :success_link_redirect => "1",
-        :abort_url => "#{base_url}/sofort/cancel",
+      base_url = "http://#{@order.store.url.split(/\r$/).first}"
+      notification_url = "#{base_url}/sofort/status"
+      {
+        su:  { },
+        amount: @order.total,
+        currency_code: Spree::Config.currency,
+        reasons: { reason: ref_number },
+        success_url: "#{base_url}/sofort/success?sofort_hash=#{@sofort_payment.sofort_hash}",
+        success_link_redirect: "1",
+        abort_url: "#{base_url}/sofort/cancel",
         # no url with port as notification url allowed
-        :notification_urls => {:notification_url => notification_url},
-        :project_id => @project_id
-      }
-      body_hash.to_xml(:dasherize => false, :root => 'multipay',
-                       :root_attrs => {:version => '1.0'})
+        notification_urls: { notification_url: notification_url },
+        project_id: @project_id
+      }.to_xml(dasherize: false, root: 'multipay', root_attrs: { version: '1.0' })
     end
 
     def transaction_request_body
-      body_hash = {
-        :transaction => @sofort_payment.sofort_transaction
-      }
-      body_hash.to_xml(:dasherize => false, :root => 'transaction_request',
-                       :root_attrs => {:version => '2'})
+      { transaction: @sofort_payment.sofort_transaction }.to_xml(dasherize: false, root: 'transaction_request', root_attrs: { version: '2' })
     end
 
     def parse_initial_response raw_response
