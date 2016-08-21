@@ -1,11 +1,5 @@
 Spree::Order.class_eval do
 
-  def mark_as_paid!
-    payment = last_payment
-    payment.amount = total # 100% payed, no credit owned
-    payment.capture!
-  end
-
 	def last_payment_method
     last_payment.try(:payment_method)
 	end
