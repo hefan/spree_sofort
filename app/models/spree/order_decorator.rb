@@ -1,21 +1,21 @@
 Spree::Order.class_eval do
 
+  def mark_as_paid!
+    payment = last_payment
+    payment.amount = total # 100% payed, no credit owned
+    payment.capture!
+  end
+
 	def last_payment_method
-		return nil if last_payment.blank?
-		return last_payment.payment_method
+    last_payment.try(:payment_method)
 	end
 
 	def last_payment
-		return nil if payments.blank?
-		return payments.last
+		payments.last
 	end
 
   def sofort_ref_number
-		if last_payment_method.present?
-		  "#{last_payment_method.preferred_reference_prefix}#{number}#{last_payment_method.preferred_reference_suffix}"
-		else
-			number
-		end
+		last_payment_method ? "#{last_payment_method.preferred_reference_prefix}#{number}#{last_payment_method.preferred_reference_suffix}" : number
 	end
 
 end
