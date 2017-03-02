@@ -39,7 +39,7 @@ describe Spree::Order do
     it "sofort ref number has prefix and suffix of payment" do
       @order.last_payment_method.set_preference(:reference_prefix, "prefix")
       @order.last_payment_method.set_preference(:reference_suffix, "suffix")
-      @order.sofort_ref_number.should eql("prefix#{@order.number}suffix");
+      @order.sofort_ref_number.should eql?("prefix#{@order.number}suffix");
     end
 
     after(:each) do

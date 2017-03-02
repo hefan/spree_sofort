@@ -32,25 +32,27 @@ describe Spree::SofortService do
 
   def stub_initial_request auth
     if auth.eql? valid_auth
-      stub_request(:post, "https://#{auth}@api.sofort.com/api/xml")
-        .to_return(:status => 200, :headers => {'Content-Type' => 'application/xml'},
-                   :body => {:payment_url => redirect_url, :transaction => transaction }
-                     .to_xml(:dasherize => false, :root => 'new_transaction'))
+#      stub_request(:post, "https://#{auth}@api.sofort.com/api/xml")
+      stub_request(:post, "https://api.sofort.com/api/xml")
+        .to_return(status: 200, headers: {'Content-Type' => 'application/xml'},
+                   body: {payment_url: redirect_url, transaction: transaction }
+                     .to_xml(dasherize: false, root: 'new_transaction'))
     else
-      stub_request(:post, "https://#{auth}@api.sofort.com/api/xml")
-        .to_return(:status => 401, :headers => {'Content-Type' => 'application/xml'},
+#      stub_request(:post, "https://#{auth}@api.sofort.com/api/xml")
+      stub_request(:post, "https://api.sofort.com/api/xml")
+        .to_return(status: 401, headers: {'Content-Type' => 'application/xml'},
                    :body => nil)
     end
   end
 
-  def stub_transaction_request auth
-    stub_request(:post, "https://#{auth}@api.sofort.com/api/xml")
-      .to_return(:status => 200, :headers => {'Content-Type' => 'application/xml'},
-                 :body => {:transaction_details => { :time => "2013-06-03T10:48:52+02:00",
-                                                     :status => "some status",
-                                                     :status_reason => "some reason",
-                                                     :amount => "100.0" } }
-                   .to_xml(:dasherize => false, :root => 'transactions'))
+  def stub_transaction_request
+    stub_request(:post, "https://api.sofort.com/api/xml")
+      .to_return(status: 200, headers: {'Content-Type' => 'application/xml'},
+                 body: {transaction_details: { time: "2013-06-03T10:48:52+02:00",
+                                               status: "some status",
+                                               status_reason: "some reason",
+                                               amount: "100.0" } }
+                   .to_xml(dasherize: false, root: 'transactions'))
   end
 
 
@@ -158,7 +160,7 @@ describe Spree::SofortService do
     context "success" do
 
       it "logs status change" do
-        stub_transaction_request valid_auth
+        stub_transaction_request
         Spree::SofortService.instance.eval_transaction_status_change({:status_notification => {:transaction => transaction}})
         changed_payment = Spree::Payment.find_by_sofort_transaction(transaction)
         expect(changed_payment.sofort_log).to include("some status")
