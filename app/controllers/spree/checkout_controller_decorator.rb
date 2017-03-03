@@ -1,5 +1,5 @@
 Spree::CheckoutController.class_eval do
-  before_filter :check_redirect_to_sofort, :only => [:update]
+  before_action :check_redirect_to_sofort, :only => [:update]
 
   def check_redirect_to_sofort
     if @order.confirmation_required?

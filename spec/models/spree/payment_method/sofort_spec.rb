@@ -10,25 +10,25 @@ describe Spree::PaymentMethod::Sofort do
     it "can save config key" do
       @sofort.set_preference(:config_key, "the key")
       @sofort.save!
-      @sofort.get_preference(:config_key).should eql("the key");
+      expect(@sofort.get_preference(:config_key)).to eq("the key");
     end
 
     it "can save server url" do
       @sofort.set_preference(:server_url, "the url")
       @sofort.save!
-      @sofort.get_preference(:server_url).should eql("the url");
+      expect(@sofort.get_preference(:server_url)).to eq("the url");
     end
 
     it "can save reference prefix" do
       @sofort.set_preference(:reference_prefix, "prefix")
       @sofort.save!
-      @sofort.get_preference(:reference_prefix).should eql("prefix");
+      expect(@sofort.get_preference(:reference_prefix)).to eq("prefix");
     end
 
     it "can save reference suffix" do
       @sofort.set_preference(:reference_suffix, "suffix")
       @sofort.save!
-      @sofort.get_preference(:reference_suffix).should eql("suffix");
+      expect(@sofort.get_preference(:reference_suffix)).to eq("suffix");
     end
 
   end

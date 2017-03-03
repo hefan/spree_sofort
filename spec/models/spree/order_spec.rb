@@ -10,15 +10,15 @@ describe Spree::Order do
 #-------------------------------------------------------------------------------------------------
   context "it has no payment" do
     it "last payment is null" do
-      @order.last_payment.should be_nil
+      expect(@order.last_payment).to eq(nil)
     end
 
     it "last payment method is null" do
-      @order.last_payment_method.should be_nil
+      expect(@order.last_payment_method).to eq(nil)
     end
 
     it "sofort ref number is only order number" do
-      @order.sofort_ref_number.should eql(@order.number);
+      expect(@order.sofort_ref_number).to eq(@order.number)
     end
 
   end
@@ -29,17 +29,19 @@ describe Spree::Order do
     end
 
     it "last payment is given" do
-      @order.last_payment.should_not be_nil
+      expect(@order.last_payment).not_to eq(nil)
     end
 
     it "last payment method is given" do
-      @order.last_payment_method.should_not be_nil
+      expect(@order.last_payment_method).not_to eq(nil)
     end
 
     it "sofort ref number has prefix and suffix of payment" do
-      @order.last_payment_method.set_preference(:reference_prefix, "prefix")
-      @order.last_payment_method.set_preference(:reference_suffix, "suffix")
-      @order.sofort_ref_number.should eql?("prefix#{@order.number}suffix");
+      pm = @order.last_payment_method
+      pm.set_preference(:reference_prefix, "prefix")
+      pm.set_preference(:reference_suffix, "suffix")
+      pm.save!
+      expect(@order.sofort_ref_number).to eq("prefix#{@order.number}suffix")
     end
 
     after(:each) do
