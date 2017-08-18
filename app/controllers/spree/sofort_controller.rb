@@ -19,7 +19,7 @@ class Spree::SofortController < Spree::StoreController
     unless order.complete?  # complete again via browser back or recalling sofort "go" url
       order.finalize!
       order.state = "complete"
-      sofort_payment.capture! if sofort_payment.auto_capture?
+      sofort_payment.capture! if sofort_payment.payment_method.auto_capture?
       order.save!
       session[:order_id] = nil
       flash[:success] = I18n.t("sofort.completed_successfully")
