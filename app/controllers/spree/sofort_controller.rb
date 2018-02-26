@@ -1,6 +1,6 @@
 class Spree::SofortController < Spree::StoreController
 
-  skip_before_filter :verify_authenticity_token, only: :status
+  skip_before_action :verify_authenticity_token, only: :status
 
   def success
     sofort_payment = Spree::Payment.find_by(sofort_hash: params[:sofort_hash])
