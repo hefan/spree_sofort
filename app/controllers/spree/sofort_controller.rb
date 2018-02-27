@@ -34,7 +34,7 @@ class Spree::SofortController < Spree::StoreController
 
   def status
     Spree::SofortService.instance.eval_transaction_status_change(params)
-    render nothing: true
+    head :ok
   end
 
   private
