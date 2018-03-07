@@ -16,15 +16,15 @@ class Spree::SofortController < Spree::StoreController
      	return redirect_to '/checkout/payment', status: 302
     end
 
-    unless order.complete?  # complete again via browser back or recalling sofort "go" url
-      order.finalize!
-      order.state = "complete"
-      order.save!
+    order.next
+    if order.complete?
       sofort_payment.capture! if sofort_payment.payment_method.auto_capture?
       session[:order_id] = nil
       flash[:success] = I18n.t("sofort.completed_successfully")
+      success_redirect order
+    else
+      redirect_to checkout_state_path(order.state)
     end
-    success_redirect order
   end
 
   def cancel
