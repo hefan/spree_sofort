@@ -1,4 +1,4 @@
-class AddSofortHashToOrders < ActiveRecord::Migration
+class AddSofortHashToOrders < ActiveRecord::Migration[4.2]
 
   def change
     add_column :spree_orders, :sofort_hash, :string
